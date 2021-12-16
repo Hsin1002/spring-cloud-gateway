@@ -28,7 +28,7 @@ import org.springframework.cloud.gateway.support.MvcFoundOnClasspathException;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration(proxyBeanMethods = false)
-@AutoConfigureBefore(GatewayAutoConfiguration.class)
+@AutoConfigureBefore(GatewayAutoConfiguration.class)//当前注解标识需要在GatewayAutoConfiguration前加载此配置
 @ConditionalOnProperty(name = "spring.cloud.gateway.enabled", matchIfMissing = true)
 public class GatewayClassPathWarningAutoConfiguration {
 
@@ -38,7 +38,7 @@ public class GatewayClassPathWarningAutoConfiguration {
 	private static final String BORDER = "\n\n**********************************************************\n\n";
 
 	@Configuration(proxyBeanMethods = false)
-	@ConditionalOnClass(name = "org.springframework.web.servlet.DispatcherServlet")
+	@ConditionalOnClass(name = "org.springframework.web.servlet.DispatcherServlet")    //classpath中存在org.springframework.web.servlet.DispatcherServlet时起效，标识项目导入了spring-boot-starter-web包
 	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 	protected static class SpringMvcFoundOnClasspathConfiguration {
 
@@ -49,7 +49,7 @@ public class GatewayClassPathWarningAutoConfiguration {
 	}
 
 	@Configuration(proxyBeanMethods = false)
-	@ConditionalOnMissingClass("org.springframework.web.reactive.DispatcherHandler")
+	@ConditionalOnMissingClass("org.springframework.web.reactive.DispatcherHandler")    //classpath中不存在org.springframework.web.reactive.DispatcherHandler时起效，标识项目未导入了spring-boot-starter-webflux包
 	protected static class WebfluxMissingFromClasspathConfiguration {
 
 		public WebfluxMissingFromClasspathConfiguration() {
