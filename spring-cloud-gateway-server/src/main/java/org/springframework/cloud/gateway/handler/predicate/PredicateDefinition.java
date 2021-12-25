@@ -16,27 +16,34 @@
 
 package org.springframework.cloud.gateway.handler.predicate;
 
+import org.springframework.cloud.gateway.support.NameUtils;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.ValidationException;
+import javax.validation.constraints.NotNull;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.validation.ValidationException;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.cloud.gateway.support.NameUtils;
-import org.springframework.validation.annotation.Validated;
-
 import static org.springframework.util.StringUtils.tokenizeToStringArray;
 
 /**
+ * 谓语定义,在 Route 里，PredicateDefinition将转换成 Predicate
+ *
  * @author Spencer Gibb
  */
 @Validated
 public class PredicateDefinition {
-
+	/**
+	 * 通过 name 对应到 org.springframework.cloud.gateway.handler.predicate.RoutePredicateFactory 的实现类。
+	 * 例如: name=Query 对应到 QueryRoutePredicateFactory
+	 */
 	@NotNull
 	private String name;
-
+	/**
+	 * 参数数组
+	 * 例如，name=Host / args={"_genkey_0" : "iocoder.cn"} ，匹配请求的 hostname 为 iocoder.cn
+	 */
 	private Map<String, String> args = new LinkedHashMap<>();
 
 	public PredicateDefinition() {

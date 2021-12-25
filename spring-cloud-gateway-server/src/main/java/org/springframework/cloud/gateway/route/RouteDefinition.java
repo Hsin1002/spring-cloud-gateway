@@ -16,6 +16,14 @@
 
 package org.springframework.cloud.gateway.route;
 
+import org.springframework.cloud.gateway.filter.FilterDefinition;
+import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
+import javax.validation.ValidationException;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,32 +31,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.validation.Valid;
-import javax.validation.ValidationException;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.cloud.gateway.filter.FilterDefinition;
-import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
-import org.springframework.validation.annotation.Validated;
-
 import static org.springframework.util.StringUtils.tokenizeToStringArray;
 
 /**
+ * 路由定义实体信息，包含路由的定义信息
+ *
  * @author Spencer Gibb
  */
 @Validated
 public class RouteDefinition {
-
+	/**
+	 * 路由ID 编号，唯一
+	 */
 	private String id;
 
+	/**
+	 * predicates 属性，谓语定义数组
+	 * 请求通过 predicates 判断是否匹配。在 Route 里，PredicateDefinition 转换成 Predicate
+	 */
 	@NotEmpty
 	@Valid
 	private List<PredicateDefinition> predicates = new ArrayList<>();
-
+	/**
+	 * *过滤器定义数组
+	 * filters 属性，过滤器定义数组。
+	 * 在 Route 里，FilterDefinition 转换成 GatewayFilter
+	 */
 	@Valid
 	private List<FilterDefinition> filters = new ArrayList<>();
-
+	/**
+	 * 路由指向的URI
+	 */
 	@NotNull
 	private URI uri;
 

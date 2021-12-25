@@ -4,7 +4,8 @@ test:
   #  uri: http://${test.hostport}
   uri: lb://httpbin
 
-
+server:
+  port: 8085
 spring:
   jmx:
     enabled: false
